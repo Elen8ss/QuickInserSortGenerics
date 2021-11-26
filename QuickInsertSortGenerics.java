@@ -8,11 +8,13 @@ public class QuickInsertSortGenerics <T extends Comparable<? super T>> implement
 
     void quickSort(T []vet, int inicio, int fim) {
         if (inicio < fim) {
-            insertSort(vet, inicio, fim);
-        }else{
-            int posicaoPivo = particiona(vet, inicio, fim);
-            quickSort(vet,  inicio, posicaoPivo - 1);
-            quickSort(vet,  posicaoPivo + 1, fim);
+            if (fim - incio > 13) {
+                int posicaoPivo = particiona(vet, inicio, fim);
+                quickSort(vet,  inicio, posicaoPivo - 1);
+                quickSort(vet,  posicaoPivo + 1, fim);
+            } else {
+                insertSort(vet, inicio, fim);
+            }
         }
     }    
     
@@ -20,7 +22,7 @@ public class QuickInsertSortGenerics <T extends Comparable<? super T>> implement
         T pivo = vet[inicio];
         int i = inicio + 1, f = fim;
 
-        while (i <= f) {
+        while (true) {
 
             // Se o valor da parte esquerda do vetor for menor que o pivô.
             while (vet[i].compareTo(pivo) < 0) {
@@ -30,13 +32,19 @@ public class QuickInsertSortGenerics <T extends Comparable<? super T>> implement
             while (vet[f].compareTo(pivo) > 0) {
                 f--;
             } 
-            if (i <= f) {
-                T troca = vet[i];
-                vet[i] = vet[f];
-                vet[f] = troca;
-                i++;
-                f--;
-            }           
+            
+            if (i > f) {
+                vet[inicio] = vet[f];
+                vet[f] = pivo;
+                return f;
+            }
+            
+            T troca = vet[i];
+            vet[i] = vet[f];
+            vet[f] = troca;
+            i++;
+            f--;
+                      
         }
         return f;
     }
@@ -45,10 +53,10 @@ public class QuickInsertSortGenerics <T extends Comparable<? super T>> implement
     void insertSort(T[] array, int i, int j) {
         T aux;
         //percorrendo o array
-        for (i=1; i<array.length; i++){
+        for (i = i + 1; i <= j; i++){
             aux = array[i]; //auxiliar recebe o elemento da posicao i
             j = i-1; //j recebe a posicao anterior de i
-            while (j >= 0 && array[j].compareTo(aux) > 0){ //loop que percorre o array enquanto j for menor que zero e o vetor na posicao j seja maior que o auxiliar
+            while (j >= i && array[j].compareTo(aux) > 0){ //loop que percorre o array enquanto j for menor que zero e o vetor na posicao j seja maior que o auxiliar
                 array[j+1] = array[j]; //joga o elemento para a posicao a frente
                 j--;
             }
